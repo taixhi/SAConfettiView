@@ -12,11 +12,11 @@ import QuartzCore
 public class SAConfettiView: UIView {
 
     public enum ConfettiType {
-        case confetti
-        case triangle
-        case star
-        case diamond
-        case image(UIImage)
+        case Confetti
+        case Triangle
+        case Star
+        case Diamond
+        case Image(UIImage)
     }
 
     var emitter: CAEmitterLayer!
@@ -42,7 +42,7 @@ public class SAConfettiView: UIView {
             UIColor(red:0.30, green:0.76, blue:0.85, alpha:1.0),
             UIColor(red:0.58, green:0.39, blue:0.55, alpha:1.0)]
         intensity = 0.5
-        type = .confetti
+        type = .Confetti
         active = false
     }
 
@@ -73,15 +73,15 @@ public class SAConfettiView: UIView {
         var fileName: String!
 
         switch type {
-        case .confetti:
+        case .Confetti:
             fileName = "confetti"
-        case .triangle:
+        case .Triangle:
             fileName = "triangle"
-        case .star:
+        case .Star:
             fileName = "star"
-        case .diamond:
+        case .Diamond:
             fileName = "diamond"
-        case let .image(customImage):
+        case let .Image(customImage):
             return customImage
         }
 
@@ -89,13 +89,8 @@ public class SAConfettiView: UIView {
         let bundle = Bundle(path: path!)
         let imagePath = bundle?.path(forResource: fileName, ofType: "png")
         let url = URL(fileURLWithPath: imagePath!)
-        do {
-            let data = try Data(contentsOf: url)
-            return UIImage(data: data)
-        } catch {
-            print(error)
-        }
-        return nil
+        let data = try! Data(contentsOf: url as URL)
+        return UIImage(data: data)
     }
 
     func confettiWithColor(color: UIColor) -> CAEmitterCell {
@@ -106,8 +101,8 @@ public class SAConfettiView: UIView {
         confetti.color = color.cgColor
         confetti.velocity = CGFloat(350.0 * intensity)
         confetti.velocityRange = CGFloat(80.0 * intensity)
-        confetti.emissionLongitude = CGFloat(Double.pi)
-        confetti.emissionRange = CGFloat(Double.pi)
+        confetti.emissionLongitude = CGFloat.pi/4.0
+        confetti.emissionRange = CGFloat.pi/4.0
         confetti.spin = CGFloat(3.5 * intensity)
         confetti.spinRange = CGFloat(4.0 * intensity)
         confetti.scaleRange = CGFloat(intensity)
